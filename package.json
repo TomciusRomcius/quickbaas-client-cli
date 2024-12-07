@@ -42,6 +42,5 @@
   "license": "ISC",
   "bin": {
     "quickbaas-cli": "./dist/main.js"
-  },
-  "type": "module"
+  }
 }
