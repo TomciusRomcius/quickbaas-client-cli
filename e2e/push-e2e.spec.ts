@@ -20,6 +20,8 @@ describe('E2E push', () => {
       },
     );
 
+    console.log(fns.data);
+
     expect(fns.data).toBeDefined();
     const strArr = fns.data as string[];
     expect(strArr.includes('testFunction.js')).toBe(true);
