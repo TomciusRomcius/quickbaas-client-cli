@@ -1,0 +1,47 @@
+{
+  "name": "quickbaas-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src/ --exec pnpm run build -e ts",
+    "test:e2e": "jest --watch --verbose true -f e2e --silent=false"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@jest/globals": "^29.7.0",
+    "@jest/types": "^29.6.3",
+    "@types/jest": "^29.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^15.11.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0"
+  },
+  "dependencies": {
+    "@types/node": "^22.9.1",
+    "axios": "^1.7.7",
+    "commander": "^12.1.0",
+    "cross-env": "^7.0.3",
+    "dist": "link:C:/Users/User/Desktop/Code-projects/baas/packages/client-cli/dist",
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "quickbaas-cli": "./dist/main.js"
+  },
+  "type": "module"
+}
