@@ -2,9 +2,8 @@
 
 import axios, { AxiosError } from 'axios';
 import { Command } from 'commander';
-import fs from 'fs';
 import { config } from 'dotenv';
-import path from 'path';
+import { readServerFilesInDir } from './utils';
 
 config({ path: '.env.development' });
 
@@ -18,20 +17,7 @@ type ServerFunctionType = {
 };
 
 async function push(): Promise<void> {
-  console.log(process.cwd());
-  const dirPath = path.join(process.cwd(), 'functions', 'server-functions');
-  const files = fs.readdirSync(dirPath, { withFileTypes: true });
-  const fns: ServerFunctionType[] = [];
-  for (const file of files) {
-    console.log(path.join(dirPath, file.name));
-    const fileBlob = await fs.readFileSync(path.join(dirPath, file.name));
-    if (!file.name.includes('.js')) continue;
-    fns.push({
-      name: file.name,
-      code: fileBlob.toString(),
-    });
-    console.log(fileBlob.toString());
-  }
+  const fns: ServerFunctionType[] = await readServerFilesInDir();
   try {
     const res = await axios.post(`${backendURL}/server-functions/create`, {
       functions: fns,
