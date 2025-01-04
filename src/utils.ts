@@ -2,6 +2,14 @@ import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 
+export const backendURL = process.env.BACKEND_URL;
+export const adminKey = process.env.ADMIN_KEY;
+
+export type ServerFunctionType = {
+  name: string;
+  code: string;
+};
+
 export function setupEnvs(): void {
   if (process.env.NODE_ENV === 'production') {
     config({ path: ['.env.production', '.env.production.local'] });
@@ -31,8 +39,7 @@ export async function readServerFilesInDir(): Promise<ServerFunctionType[]> {
   const fns: ServerFunctionType[] = [];
   for (const file of files) {
     const fileBlob = await fs.readFileSync(path.join(dirPath, file.name));
-    if (!file.name.includes('.js')) continue;
-    console.log(file.name);
+    if (!file.name.endsWith('.js')) continue;
     fns.push({
       name: file.name,
       code: fileBlob.toString(),
