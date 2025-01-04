@@ -1,0 +1,6 @@
+{
+  "app": {
+    ".write": true,
+    ".read": true
+  }
+}

@@ -58,3 +58,9 @@ export async function readMiddlewareFilesInDir(): Promise<
   }
   return middlewares;
 }
+
+export async function readDatabaseRules(): Promise<string> {
+  const file = fs.readFileSync(path.join(process.cwd(), 'database-rules.json'));
+  const content = file.toString();
+  return content;
+}

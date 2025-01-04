@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import {
+  readDatabaseRules,
   readMiddlewareFilesInDir,
   readServerFilesInDir,
   ServerFunctionType,
@@ -10,6 +11,8 @@ import Configuration from '../configuration';
 export async function push(): Promise<void> {
   const fns: ServerFunctionType[] = await readServerFilesInDir();
   const middleware: ServerMiddlewareType[] = await readMiddlewareFilesInDir();
+  const databaseRules = await readDatabaseRules();
+
   try {
     await axios.post(
       `${Configuration.getInstance().backendURL}/server-functions/create`,
@@ -23,6 +26,15 @@ export async function push(): Promise<void> {
       `${Configuration.getInstance().backendURL}/server-middleware/create`,
       {
         middlewares: middleware,
+        adminKey: Configuration.getInstance().adminKey,
+      },
+    );
+
+    const rulesJson = JSON.parse(databaseRules);
+    await axios.post(
+      `${Configuration.getInstance().backendURL}/database-rules/set`,
+      {
+        rules: rulesJson,
         adminKey: Configuration.getInstance().adminKey,
       },
     );
