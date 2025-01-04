@@ -41,6 +41,6 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "quickbaas-cli": "./dist/main.js"
+    "quickbaas": "./dist/main.js"
   }
 }
