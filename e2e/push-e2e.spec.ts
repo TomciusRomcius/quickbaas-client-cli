@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { exec } from 'child_process';
-import path from 'path';
+import { execSync } from 'child_process';
 import { setupTestEnvs, wipeTestDb } from './setup';
 
 describe('E2E push', () => {
@@ -12,7 +11,7 @@ describe('E2E push', () => {
   });
 
   it('should succesfully add server functions', async () => {
-    exec(`npx node ${cliPath} push`);
+    execSync(`npx quickbaas push`);
     const fns = await axios.post(
       `${process.env.BACKEND_URL}/server-functions/get`,
       {
