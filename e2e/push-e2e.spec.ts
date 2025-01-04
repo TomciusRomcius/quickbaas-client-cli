@@ -3,8 +3,6 @@ import { execSync } from 'child_process';
 import { setupTestEnvs, wipeTestDb } from './setup';
 
 describe('E2E push', () => {
-  const cliPath = path.join(__dirname, '..', '..', 'dist', 'main.js');
-
   beforeAll(async () => {
     setupTestEnvs();
     await wipeTestDb();
@@ -19,10 +17,22 @@ describe('E2E push', () => {
       },
     );
 
-    console.log(fns.data);
-
     expect(fns.data).toBeDefined();
     const strArr = fns.data as string[];
-    expect(strArr.includes('testFunction.js')).toBe(true);
+    expect(strArr.includes('test-function.js')).toBe(true);
+  });
+
+  it('should succesfully add middleware', async () => {
+    execSync(`npx quickbaas push`);
+    const res = await axios.post(
+      `${process.env.BACKEND_URL}/server-middleware/get`,
+      {
+        adminKey: process.env.ADMIN_KEY,
+      },
+    );
+
+    const middlewares = res.data as string[];
+    expect(middlewares).toBeTruthy();
+    expect(middlewares.includes('database-auth-middleware.js')).toBe(true);
   });
 });
