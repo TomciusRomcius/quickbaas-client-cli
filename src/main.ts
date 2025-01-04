@@ -2,6 +2,9 @@
 
 import { Command } from 'commander';
 import { push } from './commands/push';
+import { setupEnvs } from './utils';
+
+setupEnvs();
 
 const program = new Command();
 

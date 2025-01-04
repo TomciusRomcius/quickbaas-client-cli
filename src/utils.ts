@@ -2,23 +2,10 @@ import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 
-export const backendURL = process.env.BACKEND_URL;
-export const adminKey = process.env.ADMIN_KEY;
+// TODO: make these const
+export let backendURL = process.env.BACKEND_URL;
+export let adminKey = process.env.ADMIN_KEY;
 
-export type ServerFunctionType = {
-  name: string;
-  code: string;
-};
-
-export function setupEnvs(): void {
-  if (process.env.NODE_ENV === 'production') {
-    config({ path: ['.env.production', '.env.production.local'] });
-  } else if (process.env.NODE_ENV === 'development') {
-    config({ path: ['.env.development', '.env.development.local'] });
-  } else if (process.env.NODE_ENV === 'testing') {
-    config({ path: ['.env.test', '.env.test.local'] });
-  }
-}
 export type ServerFunctionType = {
   name: string;
   code: string;
@@ -33,6 +20,13 @@ export type ServerMiddlewareType = {
   };
 };
 
+export function setupEnvs(): void {
+  config({ path: ['.env', '.env.local'] });
+  backendURL = process.env.BACKEND_URL;
+  adminKey = process.env.ADMIN_KEY;
+}
+
+// TODO: add typescript support
 export async function readServerFilesInDir(): Promise<ServerFunctionType[]> {
   const dirPath = path.join(process.cwd(), 'functions', 'server-functions');
   const files = fs.readdirSync(dirPath, { withFileTypes: true });
