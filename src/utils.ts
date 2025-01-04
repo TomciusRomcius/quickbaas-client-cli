@@ -43,26 +43,29 @@ export async function readServerFilesInDir(): Promise<ServerFunctionType[]> {
   return fns;
 }
 
+// TODO: add typescript support
 export async function readMiddlewareFilesInDir(): Promise<
   ServerMiddlewareType[]
 > {
   const dirPath = path.join(process.cwd(), 'functions', 'server-middleware');
   const files = fs.readdirSync(dirPath, { withFileTypes: true });
-  const fns: ServerMiddlewareType[] = [];
+  const middlewares: ServerMiddlewareType[] = [];
   for (const file of files) {
     const fileBlob = await fs.readFileSync(path.join(dirPath, file.name));
     if (!file.name.includes('.js')) continue;
 
-    // TODO: add paths to execute on
-    fns.push({
+    // Definitely not the best way :)
+    const runsOnDb = file.name.toLowerCase().includes('database');
+    const runsOnAuth = file.name.toLowerCase().includes('auth');
+
+    middlewares.push({
       name: file.name,
       code: fileBlob.toString(),
       runsOn: {
-        database: true,
-        auth: true,
+        database: runsOnDb,
+        auth: runsOnAuth,
       },
     });
   }
-
-  return fns;
+  return middlewares;
 }
