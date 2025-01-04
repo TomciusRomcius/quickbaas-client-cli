@@ -2,22 +2,44 @@
 
 import { Command } from 'commander';
 import { push } from './commands/push';
-import { setupEnvs } from './utils';
+import Configuration from './configuration';
 
-setupEnvs();
+type CommandType = {
+  name: string;
+  action: () => void;
+};
 
-const program = new Command();
+class CLIApp {
+  private program: Command;
+  private commands: CommandType[];
 
-function setupCLI(): void {
-  program
-    .name('quickbaas-cli')
-    .description('CLI for interacting with QuickBaas backend');
+  constructor(commands: CommandType[]) {
+    this.program = new Command();
+    this.commands = commands;
 
-  program.command('push').action(async () => {
-    await push();
-  });
+    // Initial initialization
+    Configuration.getInstance();
 
-  program.parse(process.argv);
+    this.setupCLI();
+  }
+
+  private setupCLI(): void {
+    this.program
+      .name('quickbaas-cli')
+      .description('CLI for interacting with QuickBaas backend');
+
+    this.commands.forEach((command) => {
+      this.program.command(command.name).action(async () => {
+        await command.action();
+      });
+    });
+
+    this.program.parse(process.argv);
+  }
 }
 
-setupCLI();
+const commands: CommandType[] = [];
+
+commands.push({ name: 'push', action: push });
+
+const app = new CLIApp(commands);

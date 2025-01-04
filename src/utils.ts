@@ -1,10 +1,5 @@
-import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-
-// TODO: make these const
-export let backendURL = process.env.BACKEND_URL;
-export let adminKey = process.env.ADMIN_KEY;
 
 export type ServerFunctionType = {
   name: string;
@@ -19,12 +14,6 @@ export type ServerMiddlewareType = {
     auth: boolean;
   };
 };
-
-export function setupEnvs(): void {
-  config({ path: ['.env', '.env.local'] });
-  backendURL = process.env.BACKEND_URL;
-  adminKey = process.env.ADMIN_KEY;
-}
 
 // TODO: add typescript support
 export async function readServerFilesInDir(): Promise<ServerFunctionType[]> {
